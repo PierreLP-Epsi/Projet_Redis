@@ -3,58 +3,62 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Redis Knowledge Database</title>
   <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8"/>
   <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap-theme.css" media="screen" title="no title" charset="utf-8"/>
+  <link rel="stylesheet" href="index.css" media="screen" title="no title" charset="utf-8"/>
 </head>
 
 <body>
   <script src="bundle.js" type="text/javascript"></script>
 
-  <h1 class="panel-title" style="text-align:center; font-size:20pt; margin-bottom: 20px; margin-top: 20px"><b>Redis Knowledge Database</b></h1>
+  <h1 class="panel-title title"><b>Redis Knowledge Database</b></h1>
 
   <div ng-app="RedisKnowledgeDatabaseApp">
     <div class="container">
 
-      <div class="row">
-        <div class="col-sm-3 col-sm-offset-1 panel" ng-controller="LinksController as linkCtrl">
-          <div class="panel panel-default" style="text-align:center">
+      <div class="row" ng-controller="LinksController as linkCtrl">
+        <div class="col-sm-3 col-sm-offset-1 panel">
+          <div class="panel panel-default center">
             <div class="panel-heading">
               <h3 class="panel-title">
-              Liste des Tags
+                List of tag
               </h3>
+              <input class="research" type="text" ng-model="tag_research" placeholder="Search tag..."/>
             </div>
-            <span ng-repeat="tag in linkCtrl.tags">{{tag[0]}} ({{tag[1]}})<br></span>
+            <div ng-repeat="tag in linkCtrl.tags | filter:tag_research">
+              <a href ng-click="linkCtrl.oneTag(tag)">{{tag[0]}} ({{tag[1]}})</a>
+            </div>
           </div>
         </div>
 
-        <div class="col-sm-8" ng-controller="LinksController as linkCtrl">
-          <div class="panel panel-default" ng-repeat="link in linkCtrl.displayedLinks">
+        <div class="col-sm-8">
+          <!-- Faire une fonction pour rechercher dans tous les liens et pas que dans les 10 affichés
+          <div class="panel panel-default center">
             <div class="panel-heading">
-              <h3 class="panel-title"><a ng-click="link.href">{{link.description}}</a></h3>
+              <h3 class="panel-title">
+                Liste des liens
+              </h3>
+              <input class="research" type="text" ng-model="link_research" placeholder="Rechercher un lien..."/>
+            </div>
+          </div> -->
+          <div class="panel panel-default center" ng-repeat="link in linkCtrl.displayedLinks">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a href ng-click="linkCtrl.open(link)">{{link.description}}</a></h3>
             </div>
             <div class="panel-body">
               {{link.extended}}
             </div>
           </div>
 
-
-
-            <nav>
+            <nav class="center">
               <ul class="pagination">
                 <li>
-                  <a aria-label="Previous" ng-click="linkCtrl.previous()">
-                    <span aria-hidden="true">&laquo;</span>
+                  <a class="switch" aria-label="Previous" ng-click="linkCtrl.previous()">
+                    <span aria-hidden="true">&laquo; Previous</span>
                   </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                  <a aria-label="Next" ng-click="linkCtrl.next()">
-                    <span aria-hidden="true">&raquo;</span>
+                  <a class="switch" aria-label="Next" ng-click="linkCtrl.next()">
+                    <span aria-hidden="true">Next &raquo;</span>
                   </a>
                 </li>
               </ul>

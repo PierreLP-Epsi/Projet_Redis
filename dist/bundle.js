@@ -56755,9 +56755,10 @@ var _ = require('lodash');
 
 angular.module('RedisKnowledgeDatabaseApp', []);
 
-angular.module('RedisKnowledgeDatabaseApp').controller('LinksController', ['$scope', function ($scope) {
+angular.module('RedisKnowledgeDatabaseApp').controller('LinksController', ['$scope', '$window', function ($scope, $window) {
   this.links = [];
   this.displayedLinks = [];
+
   var DISPLAYED_LINKS_COUNT = 10;
   var PAGE = 0;
 
@@ -56776,8 +56777,18 @@ angular.module('RedisKnowledgeDatabaseApp').controller('LinksController', ['$sco
     }).map(function (element, i) {
       return [_.replace(element[0], "redis-", ""), element[1]];
     });
+  };
 
-    console.log(this.tags);
+  this.oneTag = function (tag) {
+    this.displayedLinks = _.filter(this.links, function (link) {
+      return _.includes(link.tags, tag[0]);
+    });
+  };
+
+  this.research = function (tag) {
+    this.displayedLinks = _.filter(this.links, function (link) {
+      return _.includes(link.tags, tag);
+    });
   };
 
   this.updatePagination = function () {
@@ -56789,13 +56800,13 @@ angular.module('RedisKnowledgeDatabaseApp').controller('LinksController', ['$sco
     this.updatePagination();
   };
 
-  this.open = function (link) {
-    console.log(link);
-  };
-
   this.previous = function () {
     PAGE--;
     this.updatePagination();
+  };
+
+  this.open = function (link) {
+    $window.open(link.href, '_blank');
   };
 
   $.get('/api/links').then(function (links) {
@@ -56804,7 +56815,5 @@ angular.module('RedisKnowledgeDatabaseApp').controller('LinksController', ['$sco
     $scope.$apply();
   }.bind(this));
 }]);
-
-//
 
 },{"angular":2,"jquery":3,"lodash":4}]},{},[5]);

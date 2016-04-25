@@ -1,0 +1,22 @@
+.title {
+  text-align: center;
+  font-size:20pt;
+  margin-bottom: 20px;
+  margin-top: 20px
+}
+
+.center {
+  text-align: center;
+}
+
+.research {
+	height: 30px;
+	width: 200px;
+	font-size: 14px;
+  margin-top: 10px;
+}
+
+.switch {
+  width: 100px;
+  height: 35px;
+}

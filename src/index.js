@@ -6,9 +6,10 @@ angular.module('RedisKnowledgeDatabaseApp', []);
 
 angular
   .module('RedisKnowledgeDatabaseApp')
-  .controller('LinksController', ['$scope', function($scope){
+  .controller('LinksController', ['$scope', '$window', function($scope, $window){
     this.links = [];
     this.displayedLinks = [];
+
     const DISPLAYED_LINKS_COUNT = 10;
     var PAGE = 0;
 
@@ -25,6 +26,12 @@ angular
         });
     };
 
+    this.oneTag = function(tag){
+      this.displayedLinks = _.filter(this.links, function(link){
+        return _.includes(link.tags, tag[0]);
+      });
+    };
+
     this.updatePagination = function(){
       this.displayedLinks = this.links.slice(PAGE*DISPLAYED_LINKS_COUNT, (PAGE+ 1)*DISPLAYED_LINKS_COUNT);
     };
@@ -34,13 +41,13 @@ angular
       this.updatePagination();
     };
 
-    this.open = function(link){
-      console.log(link);
-    };
-
     this.previous = function(){
       PAGE--;
       this.updatePagination();
+    };
+
+    this.open = function(link){
+      $window.open(link.href, '_blank');
     };
 
     $.get('/api/links').then(function(links) {
@@ -50,5 +57,3 @@ angular
     }.bind(this));
 
   }]);
-
-//
